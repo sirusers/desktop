@@ -1,0 +1,71 @@
+{% if cluster %}
+<div class="header">
+  <div class="title">{{ cluster.name }}</div>
+
+  <div class="header-actions">
+    <button class="btn"
+            hx-get="/page?cluster_id={{ selected_cluster_id }}&mode=generate&q={{ q|urlencode }}"
+            hx-target="#page"
+            hx-swap="innerHTML">
+      Сгенерировать
+    </button>
+  </div>
+</div>
+
+<div class="split">
+  <section class="panel">
+    <div class="panel-head">
+      <div class="panel-title">Новости</div>
+
+      <input class="search"
+             name="q"
+             value="{{ q }}"
+             placeholder="Поиск по новостям…"
+             hx-get="/clusters/{{ selected_cluster_id }}/news?mode={{ mode }}"
+             hx-target="#news-list"
+             hx-trigger="keyup changed delay:300ms, search"
+             hx-include="this"
+             />
+    </div>
+
+    <div id="news-list">
+      {% include "partials/news_list.html" %}
+    </div>
+
+    <div class="card">
+      <div class="card-title">Добавить новость</div>
+      <form class="form"
+            hx-post="/clusters/{{ selected_cluster_id }}/news/add"
+            hx-target="#page"
+            hx-swap="innerHTML">
+        <input type="hidden" name="mode" value="{{ mode }}">
+        <input type="hidden" name="q" value="{{ q }}">
+        <input class="input" name="title" placeholder="Заголовок" required />
+        <textarea class="textarea" name="body" placeholder="Текст (опционально)"></textarea>
+        <button class="btn" type="submit">Добавить</button>
+      </form>
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="panel-head">
+      <div class="panel-title">Просмотр</div>
+      {% if selected_news %}
+      <button class="btn ghost"
+              hx-get="/news/0/view?cluster_id={{ selected_cluster_id }}&mode={{ mode }}&q={{ q|urlencode }}"
+              hx-target="#viewer"
+              hx-swap="innerHTML">
+        Очистить
+      </button>
+      {% endif %}
+    </div>
+
+    <div id="viewer">
+      {% include "partials/news_viewer.html" %}
+    </div>
+  </section>
+</div>
+
+{% else %}
+<div class="empty">Нет кластеров</div>
+{% endif %}

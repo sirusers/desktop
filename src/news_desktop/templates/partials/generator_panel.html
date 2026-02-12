@@ -1,0 +1,40 @@
+<div class="card">
+  <div class="card-title">Генерация (draft не добавляется автоматически)</div>
+
+  <form class="form"
+        hx-post="/clusters/{{ cluster_id }}/generate_draft"
+        hx-target="#generator-panel"
+        hx-swap="innerHTML">
+    <input type="hidden" name="mode" value="{{ mode }}">
+    <input type="hidden" name="q" value="{{ q }}">
+    <textarea name="prompt" class="textarea" placeholder="Введите промпт…">{{ prompt }}</textarea>
+    <button class="btn" type="submit">Сгенерировать</button>
+  </form>
+
+  {% if draft %}
+  <div class="generated">
+    <div class="generated-title">Результат (draft)</div>
+    <div class="generated-h">{{ draft.title }}</div>
+    <pre class="generated-body">{{ draft.body }}</pre>
+
+    <div class="row">
+      <form hx-post="/clusters/{{ cluster_id }}/news/add_generated"
+            hx-target="#page"
+            hx-swap="innerHTML">
+        <input type="hidden" name="mode" value="{{ mode }}">
+        <input type="hidden" name="q" value="{{ q }}">
+        <input type="hidden" name="title" value="{{ draft.title }}">
+        <input type="hidden" name="body" value="{{ draft.body }}">
+        <button class="btn" type="submit">Добавить в список</button>
+      </form>
+
+      <button class="btn ghost"
+              hx-get="/clusters/{{ cluster_id }}/generator_panel?mode={{ mode }}&q={{ q|urlencode }}"
+              hx-target="#generator-panel"
+              hx-swap="innerHTML">
+        Отменить draft
+      </button>
+    </div>
+  </div>
+  {% endif %}
+</div>

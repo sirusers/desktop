@@ -1,0 +1,13 @@
+{% if selected_news %}
+<div class="viewer">
+  <div class="viewer-title">{{ selected_news.title }}</div>
+  <div class="viewer-meta">ID: {{ selected_news.id }}</div>
+  {% if selected_news.body %}
+  <pre class="viewer-body">{{ selected_news.body }}</pre>
+  {% else %}
+  <div class="empty">Нет текста</div>
+  {% endif %}
+</div>
+{% else %}
+<div class="empty">Выберите новость слева, чтобы увидеть текст</div>
+{% endif %}

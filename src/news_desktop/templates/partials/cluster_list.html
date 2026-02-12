@@ -1,0 +1,12 @@
+<ul class="cluster-list" id="cluster-list">
+  {% for c in clusters %}
+  <li class="cluster-item {{ 'active' if c.id == selected_cluster_id else '' }}">
+    <button class="cluster-btn"
+            hx-get="/page?cluster_id={{ c.id }}&mode={{ mode }}"
+            hx-target="#page"
+            hx-swap="innerHTML">
+      {{ c.name }}
+    </button>
+  </li>
+  {% endfor %}
+</ul>

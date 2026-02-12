@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="wrap">
+  <aside class="left">
+    <div class="left-title">Список новостей<br>кластера</div>
+
+    <div id="cluster-list">
+      {% include "partials/cluster_list.html" %}
+    </div>
+
+    <div class="left-hint">
+      Режим:
+      <span class="pill">{{ "Генерация" if mode == "generate" else "Список" }}</span>
+    </div>
+  </aside>
+
+  <main class="right">
+    <div id="page"
+         hx-get="/page?cluster_id={{ selected_cluster_id }}&mode={{ mode }}"
+         hx-trigger="load"
+         hx-swap="innerHTML">
+    </div>
+  </main>
+</div>
+{% endblock %}

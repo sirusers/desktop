@@ -1,0 +1,29 @@
+<ul class="news">
+  {% for n in news %}
+  <li class="news-item">
+    <button class="news-btn"
+            hx-get="/news/{{ n.id }}/view?cluster_id={{ selected_cluster_id }}&mode={{ mode }}&q={{ q|urlencode }}"
+            hx-target="#viewer"
+            hx-swap="innerHTML">
+      <div class="news-title">{{ n.title }}</div>
+      {% if n.body %}
+      <div class="news-snippet">{{ n.body[:90] }}{% if n.body|length > 90 %}…{% endif %}</div>
+      {% endif %}
+    </button>
+
+    <form hx-post="/news/{{ n.id }}/delete"
+          hx-target="#page"
+          hx-swap="innerHTML"
+          onsubmit="return confirm('Удалить новость?');">
+      <input type="hidden" name="cluster_id" value="{{ selected_cluster_id }}">
+      <input type="hidden" name="mode" value="{{ mode }}">
+      <input type="hidden" name="q" value="{{ q }}">
+      <button class="btn danger" type="submit">Удалить</button>
+    </form>
+  </li>
+  {% endfor %}
+</ul>
+
+{% if news|length == 0 %}
+<div class="empty">Ничего не найдено</div>
+{% endif %}

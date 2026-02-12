@@ -1,0 +1,58 @@
+{% if cluster %}
+<div class="header">
+  <div class="cluster-name">{{ cluster.name }}</div>
+
+  <button class="btn"
+          hx-get="/clusters/{{ cluster.id }}"
+          hx-target="#cluster-detail"
+          hx-swap="innerHTML">
+    Обновить
+  </button>
+</div>
+
+<div class="grid">
+  <div class="card">
+    <div class="card-title">Генерация</div>
+
+    <form class="form"
+          hx-post="/clusters/{{ cluster.id }}/generate"
+          hx-target="#cluster-detail"
+          hx-swap="innerHTML">
+      <textarea name="prompt" class="textarea"
+                placeholder="Введите свой промпт (оставьте пустым для стандартного)"></textarea>
+      <button class="btn" type="submit">Сгенерировать</button>
+    </form>
+
+    {% if generated %}
+    <div class="generated">
+      <div class="generated-title">Получившаяся новость:</div>
+      <div class="generated-h">{{ generated.title }}</div>
+      <pre class="generated-body">{{ generated.body }}</pre>
+    </div>
+    {% endif %}
+  </div>
+
+  <div class="card">
+    <div class="card-title">Добавить новость</div>
+
+    <form class="form"
+          hx-post="/clusters/{{ cluster.id }}/news/add"
+          hx-target="#cluster-detail"
+          hx-swap="innerHTML">
+      <input class="input" name="title" placeholder="Заголовок" required />
+      <textarea class="textarea" name="body" placeholder="Текст (опционально)"></textarea>
+      <button class="btn" type="submit">Добавить</button>
+    </form>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-title">Новости кластера</div>
+  <div id="news-list">
+    {% include "partials/news_list.html" %}
+  </div>
+</div>
+
+{% else %}
+<div class="empty">Нет кластеров</div>
+{% endif %}
