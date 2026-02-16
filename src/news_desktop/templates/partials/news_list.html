@@ -6,9 +6,10 @@
             hx-target="#viewer"
             hx-swap="innerHTML">
       <div class="news-title">{{ n.title }}</div>
-      {% if n.body %}
-      <div class="news-snippet">{{ n.body[:90] }}{% if n.body|length > 90 %}…{% endif %}</div>
-      {% endif %}
+      <div class="news-snippet">
+        {% if n.source %}<span style="opacity:.7;">{{ n.source }}</span> · {% endif %}
+        {{ n.body[:90] }}{% if n.body|length > 90 %}…{% endif %}
+      </div>
     </button>
 
     <form hx-post="/news/{{ n.id }}/delete"

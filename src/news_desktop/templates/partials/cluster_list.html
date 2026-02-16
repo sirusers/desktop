@@ -5,7 +5,10 @@
             hx-get="/page?cluster_id={{ c.id }}&mode={{ mode }}"
             hx-target="#page"
             hx-swap="innerHTML">
-      {{ c.name }}
+      <div style="display:flex;justify-content:space-between;gap:10px;align-items:center;">
+        <span>{{ c.title }}</span>
+        <span style="opacity:.7;font-size:12px;">{{ c.size }}</span>
+      </div>
     </button>
   </li>
   {% endfor %}
